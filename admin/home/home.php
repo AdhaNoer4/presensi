@@ -1,4 +1,11 @@
-<?php include('../layouts/header.php') ?>
+<?php
+session_start();
+if (!isset($_SESSION["login"])) {
+    header("Location: ../../auth/login.php?pesan=belum_login");
+} else if ($_SESSION["role"] !== "admin") {
+    header("Location: ../../auth/login.php?pesan=tolak_akses");
+}
+include('../layouts/header.php') ?>
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
