@@ -72,7 +72,7 @@ if (isset($_POST['login'])) {
         <div class="container container-normal py-4">
             <div class="row align-items-center g-4">
                 <div class="col-lg d-none d-lg-block">
-                    <img src="<?= base_url('assets/img/login-pic.png') ?>" height="300" class="d-block mx-auto" alt="">
+                    <img src="<?= base_url('assets/img/login-pic.png') ?>" height="500" class="d-block mx-auto" alt="">
                 </div>
                 <div class="col-lg">
                     <div class="container-tight">

@@ -1,8 +1,8 @@
-<?php 
+<?php
 session_start();
 if (!isset($_SESSION["login"])) {
     header("Location: ../../auth/login.php?pesan=belum_login");
-} else if ($_SESSION["role"] !== "mahasiswa") {
+} else if ($_SESSION["role"] !== "pegawai") {
     header("Location: ../../auth/login.php?pesan=tolak_akses");
 }
 include('../layouts/header.php') ?>
