@@ -3,10 +3,10 @@ session_start();
 require_once('../config.php');
 
 if (isset($_POST['login'])) {
-    $username = $_POST['login'];
+    $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $result = mysqli_query($connection, "SELECT * FROM users JOIN mahasiswa ON users.id_mahasiswa = mahasiswa.id WHERE username='$username'");
+    $result = mysqli_query($connection, "SELECT * FROM users JOIN mahasiswa ON users.id_mahasiswa = mahasiswa.id WHERE username = '$username'");
 
     if (mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
@@ -48,7 +48,7 @@ if (isset($_POST['login'])) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign in with illustration - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>Login Presensi</title>
     <!-- CSS files -->
     <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
@@ -71,6 +71,9 @@ if (isset($_POST['login'])) {
     <div class="page page-center">
         <div class="container container-normal py-4">
             <div class="row align-items-center g-4">
+                <div class="col-lg d-none d-lg-block">
+                    <img src="<?= base_url('assets/img/login-pic.png') ?>" height="300" class="d-block mx-auto" alt="">
+                </div>
                 <div class="col-lg">
                     <div class="container-tight">
                         <div class="text-center mb-4">
@@ -87,6 +90,7 @@ if (isset($_POST['login'])) {
                         }
 
                         ?>
+
                         <div class="card card-md">
                             <div class="card-body">
                                 <h2 class="h2 text-center mb-4">Login to your account</h2>
@@ -112,7 +116,7 @@ if (isset($_POST['login'])) {
                                     </div>
 
                                     <div class="form-footer">
-                                        <button type="submit" name="login" class="btn btn-primary w-100">Sign in</button>
+                                        <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
                                     </div>
                                 </form>
                             </div>
@@ -121,9 +125,7 @@ if (isset($_POST['login'])) {
 
                     </div>
                 </div>
-                <div class="col-lg d-none d-lg-block">
-                    <img src="<?= base_url('assets/img/Logo_UNSA.png') ?>" height="300" class="d-block mx-auto" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -144,8 +146,8 @@ if (isset($_POST['login'])) {
 
             });
         </script>
-        <?php unset($_SESSION["gagal"]); ?>
-    <?php } ?>
+    <?php unset($_SESSION["gagal"]);
+    } ?>
 </body>
 
 </html>
