@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
                     header('Location: ../admin/home/home.php');
                     exit();
                 } else {
-                    header('Location: ../mahasiswa/home/home.php');
+                    header('Location: ../pegawai/home/home.php');
                     exit();
                 }
             } else {
@@ -118,6 +118,7 @@ if (isset($_POST['login'])) {
                                     <div class="form-footer">
                                         <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
                                     </div>
+                                    <a href="<?= base_url('auth/forgot_password.php') ?>">lupa password</a>
                                 </form>
                             </div>
 
