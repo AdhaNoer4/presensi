@@ -118,7 +118,9 @@ if (isset($_POST['login'])) {
                                     <div class="form-footer">
                                         <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
                                     </div>
-                                    <a href="<?= base_url('auth/forgot_password.php') ?>">lupa password</a>
+                                    <div class="mt-3">
+                                        <a href="<?= base_url('auth/forgot_password.php') ?>">Lupa password?</a>
+                                    </div>
                                 </form>
                             </div>
 

@@ -4,9 +4,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php'; // Autoload PHPMailer
+require_once('../config.php');
 
 // Set zona waktu PHP
 date_default_timezone_set('Asia/Jakarta');
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
 
@@ -45,12 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Body    = "Klik tautan berikut untuk reset password Anda: http://localhost/presensi/auth/reset_password.php?token=$token";
 
             $mail->send();
-            echo "Instruksi reset password telah dikirim ke email Anda.";
+
+            $_SESSION['berhasil'] = "Instruksi reset password telah dikirim ke email Anda.";
         } catch (Exception $e) {
-            echo "Gagal mengirim email: {$mail->ErrorInfo}";
+
+            $_SESSION['gagal'] = "Gagal mengirim email: {$mail->ErrorInfo}";
         }
     } else {
-        echo "Email tidak ditemukan.";
+
+        $_SESSION['gagal'] = "Email tidak ditemukan.";
     }
 }
 
@@ -58,10 +63,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lupa Password</title>
+    <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
+    <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
+    <link href="<?= base_url('assets/css/demo.min.css?1692870487') ?>" rel="stylesheet" />
+</head>
+
+<body class=" d-flex flex-column">
+    <script src="<?= base_url('assets/js/demo-theme.min.js?1692870487') ?>"></script>
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+            <div class="text-center mb-4">
+            </div>
+            <div class="card card-md">
+                <div class="card-body">
+                    <h2 class="h2 text-center mb-4">Lupa Password</h2>
+                    <form action="forgot_password.php" method="POST" autocomplete="off" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label">Masukan e-mail anda yang terdaftar:</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" autocomplete="off" required>
+                        </div>
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary w-100">Kirim</button>
+                        </div>
+                        <div class="mt-3">
+                            <a href="<?= base_url('auth/login.php') ?>">Ingat Passwordnya?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-<form action="forgot_password.php" method="POST">
-    <label for="email">Masukkan Email Anda:</label>
-    <input type="email" id="email" name="email" required>
-    <button type="submit">Kirim</button>
-</form>
+    <script src="<?= base_url('assets/libs/apexcharts/dist/apexcharts.min.js?1692870487') ?>" defer></script>
+    <script src="<?= base_url('assets/libs/jsvectormap/dist/js/jsvectormap.min.js?1692870487') ?>" defer></script>
+    <script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world.js?1692870487') ?>" defer></script>
+    <script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world-merc.js?1692870487') ?>" defer></script>
+    <!-- Tabler Core -->
+    <script src="<?= base_url('assets/js/tabler.min.js?1692870487') ?>" defer></script>
+    <script src="<?= base_url('assets/js/demo.min.js?1692870487') ?>" defer></script>
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <?php if ($_SESSION["berhasil"]) { ?>
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: "<?= $_SESSION["berhasil"]; ?>",
+
+            });
+        </script>
+    <?php unset($_SESSION["berhasil"]);
+    } ?>
+
+    <?php if ($_SESSION["gagal"]) { ?>
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "<?= $_SESSION["gagal"]; ?>",
+
+            });
+        </script>
+    <?php unset($_SESSION["gagal"]);
+    } ?>
+</body>
+
+</html>
