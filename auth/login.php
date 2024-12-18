@@ -6,7 +6,7 @@ if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $result = mysqli_query($connection, "SELECT * FROM users JOIN mahasiswa ON users.id_mahasiswa = mahasiswa.id WHERE username = '$username'");
+    $result = mysqli_query($connection, "SELECT * FROM users JOIN pegawai ON users.id_pegawai = pegawai.id WHERE username = '$username'");
 
     if (mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
@@ -140,7 +140,7 @@ if (isset($_POST['login'])) {
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <?php if ($_SESSION["gagal"]) { ?>
+    <?php if (isset($_SESSION["gagal"])) { ?>
         <script>
             Swal.fire({
                 icon: "error",

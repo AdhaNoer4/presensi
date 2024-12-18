@@ -9,6 +9,7 @@ require_once('../config.php');
 // Set zona waktu PHP
 date_default_timezone_set('Asia/Jakarta');
 session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
 
@@ -114,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <?php if ($_SESSION["berhasil"]) { ?>
+    <?php if (isset($_SESSION["berhasil"])) { ?>
         <script>
             Swal.fire({
                 icon: "success",
@@ -126,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php unset($_SESSION["berhasil"]);
     } ?>
 
-    <?php if ($_SESSION["gagal"]) { ?>
+    <?php if (isset($_SESSION["gagal"])) { ?>
         <script>
             Swal.fire({
                 icon: "error",

@@ -5,6 +5,7 @@ if (!isset($_SESSION["login"])) {
 } else if ($_SESSION["role"] !== "admin") {
     header("Location: ../../auth/login.php?pesan=tolak_akses");
 }
+$judul = "Home";
 include('../layouts/header.php') ?>
 <!-- Page body -->
 <div class="page-body">
