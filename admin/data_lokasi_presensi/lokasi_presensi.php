@@ -43,9 +43,9 @@ $result = mysqli_query($connection, 'SELECT * FROM lokasi_presensi ORDER BY id D
                         <td><?= $lokasi['latitude'] . '/' . $lokasi['longitude'] ?></td>
                         <td><?= $lokasi['radius'] ?></td>
                         <td>
-                            <a href="<?= base_url('admin/data_lokasi_presensi/detail.php' . $lokasi['id']) ?>" class="badge rounded-pill text-bg-primary">Detail</a>
-                            <a href="<?= base_url('admin/data_lokasi_presensi/edit.php' . $lokasi['id']) ?>" class="badge rounded-pill text-bg-success">Edit</a>
-                            <a href="<?= base_url('admin/data_lokasi_presensi/hapus.php' . $lokasi['id']) ?>" class="badge rounded-pill text-bg-danger">Hapus</a>
+                            <a href="<?= base_url('admin/data_lokasi_presensi/detail.php?id=' . $lokasi['id']) ?>" class="badge rounded-pill text-bg-primary">Detail</a>
+                            <a href="<?= base_url('admin/data_lokasi_presensi/edit.php?id=' . $lokasi['id']) ?>" class="badge rounded-pill text-bg-success">Edit</a>
+                            <a href="<?= base_url('admin/data_lokasi_presensi/hapus.php?id=' . $lokasi['id']) ?>" class="badge rounded-pill text-bg-danger tombol-hapus">Hapus</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
@@ -53,3 +53,7 @@ $result = mysqli_query($connection, 'SELECT * FROM lokasi_presensi ORDER BY id D
         </table>
     </div>
 </div>
+
+
+
+<?php include('../layouts/footer.php') ?>
