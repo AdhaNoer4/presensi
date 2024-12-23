@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
 
     // Buat koneksi ke database
-    $pdo = new PDO('mysql:host=localhost;dbname=absen', 'root', '');
+    $pdo = new PDO('mysql:host=localhost;dbname=presensi', 'root', '');
 
     // Periksa apakah email ada di database
     $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');

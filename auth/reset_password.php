@@ -20,7 +20,7 @@
 
    
     // Koneksi ke database
-    $pdo = new PDO('mysql:host=localhost;dbname=absen', 'root', '');
+    $pdo = new PDO('mysql:host=localhost;dbname=presensi', 'root', '');
 
     // Validasi token hanya pada GET request
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
