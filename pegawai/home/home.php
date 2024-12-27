@@ -6,6 +6,24 @@ if (!isset($_SESSION["login"])) {
     header("Location: ../../auth/login.php?pesan=tolak_akses");
 }
 include('../layouts/header.php');
+include_once("../../config.php");
+
+$lokasi_presensi = $_SESSION['lokasi_presensi'];
+$result = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
+
+while ($lokasi = mysqli_fetch_array($result)) {
+$latitude_kantor = $lokasi['latitude'];
+$longitude_kantor = $lokasi['longitude'];
+$radius = $lokasi['radius'];
+$zona_waktu = $lokasi['zona_waktu'];
+}
+if ($zona_waktu == 'WIB') {
+date_default_timezone_set('Asia/Jakarta');
+} elseif ($zona_waktu =='WITA') {
+date_default_timezone_set('Asia/Makassar');
+} elseif ($zona_waktu == 'WIT') {
+date_default_timezone_set('Asia/Jayapura');
+}
 ?>
 <style>
     .parent_date {
@@ -22,59 +40,81 @@ include('../layouts/header.php');
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
-
-        <div class="row justify-content-center align-items-center">
+        <div class="row justify-content-center align-items-stretch">
+            <!-- Card Presensi Masuk -->
             <div class="col-md-4">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-header">Presensi Masuk</div>
-                    <div class="card-body">
-                        <div class="parent_date fs-2 text-center justify-content-center">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+
+                    <?php 
+                    $id_pegawai = $_SESSION['id_pegawai'];
+                    $cek_presensi_masuk = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini'") ?>
+                        <!-- Bagian Tanggal -->
+                        <div class="parent_date fs-2 text-center">
                             <div id="tanggal_masuk"></div>
                             <div class="ms-2"></div>
                             <div id="bulan_masuk"></div>
                             <div class="ms-2"></div>
                             <div id="tahun_masuk"></div>
                         </div>
-
-                        <div class="parent_clock fs-1 text-center fw-bold justify-content-center">
-                            <div id="jam_masuk"></div>
-                            :
-                            <div id="menit_masuk"></div>
-                            :
+                        <!-- Bagian Jam -->
+                        <div class="parent_clock fs-1 text-center fw-bold">
+                            <div id="jam_masuk"></div>:
+                            <div id="menit_masuk"></div>:
                             <div id="detik_masuk"></div>
                         </div>
-                        <form action="" class="text-center mt-3">
-                            <button type="submit" class="btn btn-success">Masuk</button>
+                    </div>
+                    <div class="card-footer text-center">
+                        <!-- Tombol Presensi -->
+                        <form method="POST" action="<?= base_url('pegawai/presensi/presensi_masuk.php') ?>">
+                            <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                            <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                            <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
+                            <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
+                            <input type="hidden" value="<?= $radius ?>" name="radius">
+                            <input type="hidden" value="<?= $zona_waktu ?>" name="zona_waktu">
+                            <input type="hidden" value="<?= date('Y-m-d') ?>" name="tanggal_masuk">
+                            <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_masuk">
+                            <button type="submit" class="btn btn-success" name="tombol_masuk">Masuk</button>
                         </form>
                     </div>
                 </div>
             </div>
 
+            <!-- Card Presensi Keluar -->
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">Presensi Keluar</div>
-                    <div class="card-body">
-                        <div class="parent_date fs-2 text-center justify-content-center">
-                            <div id="tanggal_keluar"></div>
+                <div class="card h-100">
+                    <div class="card-header text-center">Presensi Keluar</div>
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                        <!-- Bagian Tanggal -->
+                        <div class="parent_date fs-2 text-center">
+                            <div id="tanggal_keluar">26</div>
                             <div class="ms-2"></div>
-                            <div id="bulan_keluar"></div>
+                            <div id="bulan_keluar">Desember</div>
                             <div class="ms-2"></div>
-                            <div id="tahun_keluar"></div>
+                            <div id="tahun_keluar">2024</div>
                         </div>
-
-                        <div class="parent_clock fs-1 text-center fw-bold justify-content-center">
-                            <div id="jam_keluar"></div>
-                            :
-                            <div id="menit_keluar"></div>
-                            :
-                            <div id="detik_keluar"></div>
+                        <!-- Bagian Jam -->
+                        <div class="parent_clock fs-1 text-center fw-bold">
+                            <div id="jam_keluar">22</div>:
+                            <div id="menit_keluar">02</div>:
+                            <div id="detik_keluar">36</div>
                         </div>
-                        <form action="" class="text-center mt-3">
+                    </div>
+                    <div class="card-footer text-center">
+                        <!-- Tombol Presensi -->
+                        <form method="POST" action="<?= base_url('pegawai/presensi/presensi_keluar.php') ?>">
                             <button type="submit" class="btn btn-danger">Keluar</button>
                         </form>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
 
         </div>
     </div>
@@ -121,6 +161,23 @@ include('../layouts/header.php');
         document.getElementById("jam_keluar").innerHTML = waktu.getHours();
         document.getElementById("menit_keluar").innerHTML = waktu.getMinutes();
         document.getElementById("detik_keluar").innerHTML = waktu.getSeconds();
+    }
+
+    getLocation();
+
+    function getLocation(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }else{
+            alert("Browser anda tidak mendukung Geolocation")
+        }
+    }
+
+    function showPosition(position){
+        $("#latitude_pegawai").val(position.coords.latitude);
+        $("#longitude_pegawai").val(position.coords.longitude);
+
+
     }
 </script>
 

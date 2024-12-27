@@ -149,8 +149,8 @@ if (isset($_POST['login'])) {
 
             });
         </script>
-    <?php unset($_SESSION["gagal"]);
-    } ?>
+    <?php unset($_SESSION["gagal"]); ?>
+  <?php  } ?>
 </body>
 
 </html>
