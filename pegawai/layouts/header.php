@@ -14,6 +14,9 @@ require_once("../../config.php");
     <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/demo.min.css?1692870487') ?>" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -24,6 +27,7 @@ require_once("../../config.php");
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+        
     </style>
 </head>
 

@@ -28,27 +28,17 @@ include_once("../../config.php");
 $lokasi_presensi = $_SESSION['lokasi_presensi'];
 $result = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
 
-if (isset($_POST['tombol_masuk'])) {
+if (isset($_POST['tombol-keluar'])) {
     // Ambil data dari form dan pastikan valid
+    $id = $_POST['id'];
     $latitude_pegawai = (float) $_POST['latitude_pegawai'];
     $longitude_pegawai = (float) $_POST['longitude_pegawai'];
     $latitude_kantor = (float) $_POST['latitude_kantor'];
     $longitude_kantor = (float) $_POST['longitude_kantor'];
     $radius = (float) $_POST['radius'];
-    $tanggal_masuk= $_POST['tanggal_masuk'];
-    $jam_masuk = $_POST['jam_masuk'];
+    $tanggal_keluar= $_POST['tanggal_keluar'];
+    $jam_keluar = $_POST['jam_keluar'];
 
-    if(empty($latitude_pegawai) || empty($longitude_pegawai) ){
-        $_SESSION['gagal'] = "Presensi gagal, lokasi anda belum aktif!";
-        header("Location: ../home/home.php");
-        exit;
-    }
-
-    if(empty($latitude_kantor) || empty($longitude_kantor) ){
-        $_SESSION['gagal'] = "Presensi gagal, koordinat kantor belum disetting.";
-        header("Location: ../home/home.php");
-        exit;
-    }
     // Debugging untuk memastikan nilai-nilai tersebut benar
     // echo "<pre>";
     // echo "Latitude Pegawai: $latitude_pegawai<br>";
@@ -99,14 +89,14 @@ if (isset($jarak_meter) && $jarak_meter > $radius) {
         <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-body" style="margin: auto;">
-                    <input type="hidden" id="id" value="<?= $_SESSION['id']?>">
-                    <input type="hidden" id="tanggal_masuk" value="<?= $tanggal_masuk?>">
-                    <input type="hidden" id="jam_masuk" value="<?= $jam_masuk?>">
+                    <input type="hidden" id="id" value="<?= $id ?>">
+                    <input type="hidden" id="tanggal_keluar" value="<?= $tanggal_keluar?>">
+                    <input type="hidden" id="jam_keluar" value="<?= $jam_keluar?>">
                     <!-- Tampilan kamera -->
                     <div id="my_camera" ></div>
                     <div id="my_result"></div>
-                    <div><span><?= date('d F Y',strtotime($tanggal_masuk)) . ' - ' . $jam_masuk ?></span></div>
-                    <button class="btn btn-primary mt-3" id="ambil-foto">Masuk</button>
+                    <div><span><?= date('d F Y',strtotime($tanggal_keluar)) . ' - ' . $jam_keluar ?></span></div>
+                    <button class="btn btn-danger mt-3" id="ambil-foto">Keluar</button>
                 </div>
             </div>
         </div>
@@ -130,8 +120,8 @@ if (isset($jarak_meter) && $jarak_meter > $radius) {
                 
                 document.getElementById('ambil-foto').addEventListener('click', function() {
     let id = document.getElementById('id').value;
-    let tanggal_masuk = document.getElementById('tanggal_masuk').value;
-    let jam_masuk = document.getElementById('jam_masuk').value; 
+    let tanggal_keluar = document.getElementById('tanggal_keluar').value;
+    let jam_keluar = document.getElementById('jam_keluar').value; 
     
     Webcam.snap(function(data_uri) {
         document.getElementById('my_result').innerHTML = '<img src="' + data_uri + '"/>';
@@ -156,13 +146,13 @@ if (isset($jarak_meter) && $jarak_meter > $radius) {
             }
         };
         
-        xhttp.open("POST", "presensi_masuk_aksi.php", true);
+        xhttp.open("POST", "presensi_keluar_aksi.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send(
             'photo=' + encodeURIComponent(data_uri) +
             '&id=' + encodeURIComponent(id) +
-            '&tanggal_masuk=' + encodeURIComponent(tanggal_masuk) +
-            '&jam_masuk=' + encodeURIComponent(jam_masuk)
+            '&tanggal_keluar=' + encodeURIComponent(tanggal_keluar) +
+            '&jam_keluar=' + encodeURIComponent(jam_keluar)
         );
     });
 });

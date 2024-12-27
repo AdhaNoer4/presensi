@@ -12,17 +12,18 @@ $lokasi_presensi = $_SESSION['lokasi_presensi'];
 $result = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
 
 while ($lokasi = mysqli_fetch_array($result)) {
-$latitude_kantor = $lokasi['latitude'];
-$longitude_kantor = $lokasi['longitude'];
-$radius = $lokasi['radius'];
-$zona_waktu = $lokasi['zona_waktu'];
+    $latitude_kantor = $lokasi['latitude'];
+    $longitude_kantor = $lokasi['longitude'];
+    $radius = $lokasi['radius'];
+    $zona_waktu = $lokasi['zona_waktu'];
+    $jam_pulang = $lokasi['jam_pulang'];
 }
 if ($zona_waktu == 'WIB') {
-date_default_timezone_set('Asia/Jakarta');
-} elseif ($zona_waktu =='WITA') {
-date_default_timezone_set('Asia/Makassar');
+    date_default_timezone_set('Asia/Jakarta');
+} elseif ($zona_waktu == 'WITA') {
+    date_default_timezone_set('Asia/Makassar');
 } elseif ($zona_waktu == 'WIT') {
-date_default_timezone_set('Asia/Jayapura');
+    date_default_timezone_set('Asia/Jayapura');
 }
 ?>
 <style>
@@ -47,23 +48,28 @@ date_default_timezone_set('Asia/Jayapura');
                     <div class="card-header">Presensi Masuk</div>
                     <div class="card-body d-flex flex-column justify-content-center align-items-center">
 
-                    <?php 
-                    $id_pegawai = $_SESSION['id_pegawai'];
-                    $cek_presensi_masuk = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini'") ?>
-                        <!-- Bagian Tanggal -->
-                        <div class="parent_date fs-2 text-center">
-                            <div id="tanggal_masuk"></div>
-                            <div class="ms-2"></div>
-                            <div id="bulan_masuk"></div>
-                            <div class="ms-2"></div>
-                            <div id="tahun_masuk"></div>
-                        </div>
-                        <!-- Bagian Jam -->
-                        <div class="parent_clock fs-1 text-center fw-bold">
-                            <div id="jam_masuk"></div>:
-                            <div id="menit_masuk"></div>:
-                            <div id="detik_masuk"></div>
-                        </div>
+                        <?php
+                        $id_pegawai = $_SESSION['id'];
+                        $tanggal_hari_ini = date('Y-m-d');
+
+                        $cek_presensi_masuk = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini'");
+                        ?>
+                        <?php if (mysqli_num_rows($cek_presensi_masuk) == 0) { ?>
+
+                            <!-- Bagian Tanggal -->
+                            <div class="parent_date fs-2 text-center">
+                                <div id="tanggal_masuk"></div>
+                                <div class="ms-2"></div>
+                                <div id="bulan_masuk"></div>
+                                <div class="ms-2"></div>
+                                <div id="tahun_masuk"></div>
+                            </div>
+                            <!-- Bagian Jam -->
+                            <div class="parent_clock fs-1 text-center fw-bold">
+                                <div id="jam_masuk"></div>:
+                                <div id="menit_masuk"></div>:
+                                <div id="detik_masuk"></div>
+                            </div>
                     </div>
                     <div class="card-footer text-center">
                         <!-- Tombol Presensi -->
@@ -78,6 +84,11 @@ date_default_timezone_set('Asia/Jayapura');
                             <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_masuk">
                             <button type="submit" class="btn btn-success" name="tombol_masuk">Masuk</button>
                         </form>
+
+                    <?php } else { ?>
+                        <i class="fa-regular fa-circle-check fa-4x text-success"></i>
+                        <h4 class="my-3">Anda telah melakukan presensi masuk</h4>
+                    <?php } ?>
                     </div>
                 </div>
             </div>
@@ -87,26 +98,61 @@ date_default_timezone_set('Asia/Jayapura');
                 <div class="card h-100">
                     <div class="card-header text-center">Presensi Keluar</div>
                     <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                        <!-- Bagian Tanggal -->
-                        <div class="parent_date fs-2 text-center">
-                            <div id="tanggal_keluar">26</div>
-                            <div class="ms-2"></div>
-                            <div id="bulan_keluar">Desember</div>
-                            <div class="ms-2"></div>
-                            <div id="tahun_keluar">2024</div>
-                        </div>
-                        <!-- Bagian Jam -->
-                        <div class="parent_clock fs-1 text-center fw-bold">
-                            <div id="jam_keluar">22</div>:
-                            <div id="menit_keluar">02</div>:
-                            <div id="detik_keluar">36</div>
-                        </div>
+                        <?php
+                        $ambil_data_presensi  = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini'");
+                        ?>
+                        <?php $waktu_sekarang = date('H:i:s');
+
+                        if (strtotime($waktu_sekarang) <= strtotime($jam_pulang)) { ?>
+                            <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
+                            <h4 class="my-3">Belum waktunya pulang</h4>
+
+
+                        <?php } elseif (strtotime($waktu_sekarang) >= strtotime($jam_pulang) && mysqli_num_rows($ambil_data_presensi) == 0) { ?>
+                            <i class="fa-regular fa-circle-xmark fa-4x text-danger"></i>
+                            <h4 class="my-3">Silahkan melakukan presensi masuk terlebih dahulu</h4>
+
+                        <?php } else { ?>
+
+                            <?php while ($cek_presensi_keluar = mysqli_fetch_array($ambil_data_presensi)) { ?>
+                                <?php if (($cek_presensi_keluar['tanggal_masuk']) && $cek_presensi_keluar['tanggal_keluar'] == '0000-00-00') { ?>
+
+                                    <!-- Bagian Tanggal -->
+                                    <div class="parent_date fs-2 text-center">
+                                        <div id="tanggal_keluar">26</div>
+                                        <div class="ms-2"></div>
+                                        <div id="bulan_keluar">Desember</div>
+                                        <div class="ms-2"></div>
+                                        <div id="tahun_keluar">2024</div>
+                                    </div>
+                                    <!-- Bagian Jam -->
+                                    <div class="parent_clock fs-1 text-center fw-bold">
+                                        <div id="jam_keluar">22</div>:
+                                        <div id="menit_keluar">02</div>:
+                                        <div id="detik_keluar">36</div>
+                                    </div>
                     </div>
                     <div class="card-footer text-center">
                         <!-- Tombol Presensi -->
                         <form method="POST" action="<?= base_url('pegawai/presensi/presensi_keluar.php') ?>">
-                            <button type="submit" class="btn btn-danger">Keluar</button>
+                            <input type="hidden" name='id' value="<?= $cek_presensi_keluar['id']?>">
+                        <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                            <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                            <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
+                            <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
+                            <input type="hidden" value="<?= $radius ?>" name="radius">
+                            <input type="hidden" value="<?= $zona_waktu ?>" name="zona_waktu">
+                            <input type="hidden" value="<?= date('Y-m-d') ?>" name="tanggal_keluar">
+                            <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_keluar">
+                            <button type="submit" name="tombol-keluar" class="btn btn-danger">Keluar</button>
                         </form>
+
+                    <?php } else { ?>
+                        <i class="fa-regular fa-circle-check fa-4x text-success"></i>
+                        <h4 class="my-3">Anda telah melakukan presensi keluar</h4>
+                    <?php } ?>
+                <?php } ?>
+            <?php } ?>
                     </div>
                 </div>
             </div>
@@ -116,8 +162,8 @@ date_default_timezone_set('Asia/Jayapura');
 
 
 
-        </div>
-    </div>
+</div>
+</div>
 </div>
 
 <!-- Script Waktu real time -->
@@ -165,15 +211,15 @@ date_default_timezone_set('Asia/Jayapura');
 
     getLocation();
 
-    function getLocation(){
-        if(navigator.geolocation){
+    function getLocation() {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
-        }else{
+        } else {
             alert("Browser anda tidak mendukung Geolocation")
         }
     }
 
-    function showPosition(position){
+    function showPosition(position) {
         $("#latitude_pegawai").val(position.coords.latitude);
         $("#longitude_pegawai").val(position.coords.longitude);
 
