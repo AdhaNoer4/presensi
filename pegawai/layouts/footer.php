@@ -130,11 +130,13 @@
 <script src="<?= base_url('assets/libs/jsvectormap/dist/js/jsvectormap.min.js?1692870487') ?>" defer></script>
 <script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world.js?1692870487') ?>" defer></script>
 <script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world-merc.js?1692870487') ?>" defer></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <!-- Tabler Core -->
 <script src="<?= base_url('assets/js/tabler.min.js?1692870487') ?>" defer></script>
 <script src="<?= base_url('assets/js/demo.min.js?1692870487') ?>" defer></script>
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<<<<<<< HEAD
 
 <!-- alert validasi -->
 <?php if (isset($_SESSION['validasi'])) : ?>
@@ -200,7 +202,21 @@
     })
 </script>
 
+=======
+>>>>>>> version2
 
+<?php if (isset($_SESSION["gagal"])) { ?>
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "<?= $_SESSION["gagal"]; ?>",
+
+            });
+        </script>
+    <?php unset($_SESSION["gagal"]); ?>
+  <?php  } ?>
+  
 </body>
 
 </html>
