@@ -171,25 +171,42 @@ if (isset($jarak_meter) && $jarak_meter > $radius) {
 
 let latitude_ktr = <?= $latitude_kantor ?>;
 let longitude_ktr = <?= $longitude_kantor ?>;
-
 let latitude_peg = <?= $latitude_pegawai ?>;
 let longitude_peg = <?= $longitude_pegawai ?>;
+let radius = <?= $radius ?>;
 
 let map = L.map('map').setView([latitude_ktr, longitude_ktr], 13);
+
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var marker = L.marker([latitude_ktr, longitude_ktr]).addTo(map);
+// Marker merah untuk lokasi kantor
+var officeMarker = L.marker([latitude_ktr, longitude_ktr], {
+    icon: L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    })
+}).addTo(map).bindPopup('Lokasi Kantor');
 
-var circle = L.circle([latitude_peg, longitude_peg], {
+// Marker biru untuk lokasi user
+var userMarker = L.marker([latitude_peg, longitude_peg], {
+    icon: L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    })
+}).addTo(map).bindPopup('Lokasi anda saat ini').openPopup();
+
+// Circle area untuk radius kantor
+var circle = L.circle([latitude_ktr, longitude_ktr], {
     color: 'red',
     fillColor: '#f03',
-    fillOpacity: 0.5,
-    radius: 500
-}).addTo(map).bindPopup('Lokasi anda saat ini').openPopup();
-            </script>
-            
-    
-<?php include('../layouts/footer.php'); ?>
+    fillOpacity: 0.2,
+    radius: radius
+}).addTo(map);
+</script>
