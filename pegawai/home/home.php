@@ -5,8 +5,11 @@ if (!isset($_SESSION["login"])) {
 } else if ($_SESSION["role"] !== "pegawai") {
     header("Location: ../../auth/login.php?pesan=tolak_akses");
 }
+
+$judul = 'Home';
 include('../layouts/header.php');
 include_once("../../config.php");
+
 
 $lokasi_presensi = $_SESSION['lokasi_presensi'];
 $result = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");

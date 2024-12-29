@@ -22,6 +22,7 @@ if (!isset($_SESSION["login"])) {
     exit;
 }
 
+$judul = 'Presensi Keluar';
 include('../layouts/header.php');
 include_once("../../config.php");
 
@@ -200,3 +201,5 @@ var circle = L.circle([latitude_ktr, longitude_ktr], {
     radius: radius
 }).addTo(map);
 </script>
+
+<?php include('../layouts/footer.php') ?>
