@@ -28,7 +28,7 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi ini di komputer Anda:
 
 1. Clone repository ini:
    ```bash
-   git clone https://github.com/username/nama-repo.git
+   git clone https://github.com/AdhaNoer4/presensi.git
    ```
 2. Masuk ke direktori proyek:
    ```bash
