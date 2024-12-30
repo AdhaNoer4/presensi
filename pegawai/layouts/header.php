@@ -12,7 +12,11 @@ $pegawai = mysqli_fetch_array($result);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Dashboard - Pegawai</title>
+
+    
+
+    <title><?= $judul?></title>
+
     <!-- CSS files -->
     <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
@@ -275,7 +279,7 @@ $pegawai = mysqli_fetch_array($result);
                             <!-- Page pre-title -->
 
                             <h2 class="page-title">
-                                Dashboard
+                                <?= $judul ?>
                             </h2>
                         </div>
                         <!-- Page title actions -->

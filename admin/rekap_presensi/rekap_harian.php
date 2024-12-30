@@ -4,33 +4,27 @@ session_start();
 if (!isset($_SESSION["login"])) {
     header("Location: ../../auth/login.php?pesan=belum_login");
     exit;
-} else if ($_SESSION["role"] !== "pegawai") {
+} else if ($_SESSION["role"] !== "admin") {
     header("Location: ../../auth/login.php?pesan=tolak_akses");
     exit;
 }
 
-$judul = "Rekap Presensi";
+$judul = "Rekap Presensi Harian";
 include('../layouts/header.php');
 include_once("../../config.php");
 
 
 
 if (empty($_GET['tanggal_dari'])) {
-    $id  = $_SESSION['id'];
-    $result = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai ='$id' ORDER BY tanggal_masuk DESC");
+    
+    $result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id ORDER BY tanggal_masuk DESC");
 } else {
-    $id  = $_SESSION['id'];
+    
     $tanggal_dari = $_GET['tanggal_dari'];
     $tanggal_sampai = $_GET['tanggal_sampai'];
-    $result = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai ='$id' AND tanggal_masuk BETWEEN '$tanggal_dari' AND '$tanggal_sampai' ORDER BY tanggal_masuk DESC");
+    $result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE tanggal_masuk BETWEEN '$tanggal_dari' AND '$tanggal_sampai' ORDER BY tanggal_masuk DESC");
 }
 
-$lokasi_presensi = $_SESSION['lokasi_presensi'];
-$lokasi = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
-
-while ($lokasi_result = mysqli_fetch_array($lokasi)) :
-    $jam_masuk_kantor = date('H:i:s', strtotime($lokasi_result['jam_masuk']));
-endwhile
 ?>
 <div class="page-body">
     <div class="container-xl">
@@ -57,6 +51,7 @@ endwhile
         <table class="table table-bordered">
             <tr class="text-center">
                 <th>No.</th>
+                <th>Nama</th>
                 <th>Tanggal</th>
                 <th>Jam Masuk</th>
                 <th>Jam Pulang</th>
@@ -83,6 +78,12 @@ endwhile
         $selisih_menit_kerja = floor($selisih / 60);
 
         //menghitung total jam terlambat
+        $lokasi_presensi = $rekap['lokasi_presensi'];
+$lokasi = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
+
+while ($lokasi_result = mysqli_fetch_array($lokasi)) :
+    $jam_masuk_kantor = date('H:i:s', strtotime($lokasi_result['jam_masuk']));
+endwhile;
         $jam_masuk = date('H:i:s', strtotime($rekap['jam_masuk']));
         $timestamp_jam_masuk_real = strtotime($jam_masuk);
         $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
@@ -100,8 +101,10 @@ endwhile
             $selisih_menit_terlambat = 0;
         }
     ?>
+
         <tr>
             <td> <?= $no++ ?></td>
+            <td><?= $rekap['nama'] ?></td>
             <td> <?= date('d F Y', strtotime($rekap['tanggal_masuk']))  ?></td>
             <td class="text-center"> <?= $rekap['jam_masuk'] ?></td>
             <td class="text-center"> <?= $rekap['jam_keluar'] ?></td>
