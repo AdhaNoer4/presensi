@@ -9,7 +9,7 @@ if (!isset($_SESSION["login"])) {
     exit;
 }
 
-$judul = "Rekap Presensi";
+$judul = "Rekap Presensi Harian";
 include('../layouts/header.php');
 include_once("../../config.php");
 
@@ -22,7 +22,7 @@ if (empty($_GET['tanggal_dari'])) {
     
     $tanggal_dari = $_GET['tanggal_dari'];
     $tanggal_sampai = $_GET['tanggal_sampai'];
-    $result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama pegawai.lokasi_presensi FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE tanggal_masuk BETWEEN '$tanggal_dari' AND '$tanggal_sampai' ORDER BY tanggal_masuk DESC");
+    $result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE tanggal_masuk BETWEEN '$tanggal_dari' AND '$tanggal_sampai' ORDER BY tanggal_masuk DESC");
 }
 
 ?>
