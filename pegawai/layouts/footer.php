@@ -168,6 +168,51 @@
     </script>
     <?php unset($_SESSION['berhasil']) ?>
 <?php endif; ?>
+<!-- alert berhasil -->
+<?php if (isset($_SESSION['berhasil'])) : ?>
+    <script>
+        const berhasil = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        berhasil.fire({
+            icon: "success",
+            title: "<?= $_SESSION['berhasil'] ?>"
+        });
+    </script>
+    <?php unset($_SESSION['berhasil']) ?>
+<?php endif; ?>
+
+<!-- alert validasi -->
+<?php if (isset($_SESSION['validasi'])) : ?>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "<?= $_SESSION['validasi'] ?>"
+        });
+    </script>
+    <?php unset($_SESSION['validasi']) ?>
+<?php endif; ?>
+
+
 </body>
 
 </html>
