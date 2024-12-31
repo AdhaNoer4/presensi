@@ -1,5 +1,17 @@
 {
+    "name": "admin/presensi",
     "require": {
-        "phpmailer/phpmailer": "^6.9"
-    }
+        "phpoffice/phpspreadsheet": "1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "Admin\\Presensi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Habibie",
+            "email": "fahrudinhabibi4@gmail.com"
+        }
+    ]
 }
