@@ -158,16 +158,48 @@ if (empty($_GET['filter_bulan'])) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Export Excel Rekap Presensi Bulanan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form method="POST" action="<?= base_url('admin/rekap_presensi/rekap_bulanan_excel.php')?>">
             <div class="modal-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit tempora totam unde.
+
+            <div class="mb-3">
+                <label for="">Bulan</label>
+                <select name="filter_bulan" class="form-control">
+                            <option value="">--Pilih Bulan--</option>
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                         
+                    </select>
+            </div>
+            <div class="mb-3">
+                <label for="">Tahun</label>
+                <select name="filter_tahun" class="form-control">
+                        <option value="">--Pilih Tahun--</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+            
+            </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Export</button>
             </div>
+        </form>
         </div>
     </div>
 </div>
