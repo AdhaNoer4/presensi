@@ -34,6 +34,11 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi ini di komputer Anda:
    ```bash
    cd nama-repo
    ```
+4. jalankan 
+   ```bash
+   composer install
+   ```
+   untuk menginstall dependency phpmailer dan phpspreadsheet
 3. Lalu Run dengan Localhost kamu
 
 ---
