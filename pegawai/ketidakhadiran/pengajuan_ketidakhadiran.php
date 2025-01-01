@@ -106,6 +106,7 @@ $result = mysqli_query($connection, "SELECT * FROM ketidakhadiran WHERE id_pegaw
                     <div class="mb-3">
                         <label for="">Surat Keterangan</label>
                         <input type="file" class="form-control" name="file">
+                        
                     </div>
 
                                     <button type="submit" class="btn btn-primary" name="submit">Ajukan</button>
