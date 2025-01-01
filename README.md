@@ -34,7 +34,7 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi ini di komputer Anda:
    ```bash
    cd nama-repo
    ```
-4. jalankan 
+4. jika terjadi error pada fitur lupa password & export rekap jalankan 
    ```bash
    composer install
    ```
