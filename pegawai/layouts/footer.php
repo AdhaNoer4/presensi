@@ -136,7 +136,19 @@
 <script src="<?= base_url('assets/js/demo.min.js?1692870487') ?>" defer></script>
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<<<<<<< HEAD
+<!-- show password -->
+<script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            // Toggle tipe input password
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+        });
+    </script>
+
 
 <!-- alert validasi -->
 <?php if (isset($_SESSION['validasi'])) : ?>
@@ -180,11 +192,10 @@
     </script>
     <?php unset($_SESSION['berhasil']) ?>
 <?php endif; ?>
-<<<<<<< HEAD
+
 
 <!-- alert konfirmasi hapus -->
 
->>>>>>> version2
 
 <?php if (isset($_SESSION["gagal"])) { ?>
         <script>
@@ -198,8 +209,6 @@
     <?php unset($_SESSION["gagal"]); ?>
   <?php  } ?>
   
-=======
->>>>>>> version2
 </body>
 
 </html>
