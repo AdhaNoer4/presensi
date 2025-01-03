@@ -29,6 +29,18 @@ if ($jml_hadir_query) {
     $jumlah_hadir = 0; // Jika query gagal, tampilkan 0
 }
 
+// Query untuk menghitung jumlah alpa
+$query_alpa = "SELECT COUNT(*) AS jumlah_alpa FROM presensi WHERE DATE(tanggal_masuk) = CURDATE() AND tanggal_masuk IS NULL";
+$result_alpa = mysqli_query($connection, $query_alpa);
+$data_alpa = $result_alpa->fetch_assoc();
+$jumlah_alpa = $data_alpa['jumlah_alpa'];
+
+// Query untuk menghitung jumlah ketidakhadiran dengan keterangan (sakit, izin, atau cuti)
+$query_ketidakhadiran = "SELECT COUNT(*) AS jumlah_ketidakhadiran FROM ketidakhadiran WHERE DATE(tanggal) = CURDATE() AND keterangan IN ('sakit', 'izin', 'cuti')";
+$result_ketidakhadiran = mysqli_query($connection, $query_ketidakhadiran);
+$data_ketidakhadiran = $result_ketidakhadiran->fetch_assoc();
+$jumlah_ketidakhadiran = $data_ketidakhadiran['jumlah_ketidakhadiran'];
+
 ?>
 
 
@@ -112,7 +124,7 @@ if ($jml_hadir_query) {
                                             Jumlah Alpa
                                         </div>
                                         <div class="text-secondary">
-                                            0 Pegawai
+                                            <?= $jumlah_alpa . ' Pegawai'; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +151,7 @@ if ($jml_hadir_query) {
                                             Jumlah Sakit, Izin & Cuti
                                         </div>
                                         <div class="text-secondary">
-                                            0 Pegawai
+                                            <?= $jumlah_ketidakhadiran . ' Pegawai'; ?>
                                         </div>
                                     </div>
                                 </div>
