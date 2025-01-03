@@ -9,9 +9,26 @@ $judul = "Home";
 include('../layouts/header.php');
 require_once('../../config.php');
 
+// Atur timezone (WIB, WITA, WIT)
+date_default_timezone_set('Asia/Jakarta'); // WIB
+// date_default_timezone_set('Asia/Makassar'); // WITA
+// date_default_timezone_set('Asia/Jayapura'); // WIT
+
+// Query total pegawai aktif
 $pegawai = mysqli_query($connection, "SELECT pegawai.*, users.status FROM pegawai JOIN users ON pegawai.id = users.id_pegawai WHERE status = 'Aktif'");
 
 $total_pegawai_aktif = mysqli_num_rows($pegawai);
+
+// query jumlah hadir
+$jml_hadir_query = mysqli_query($connection, "SELECT COUNT(*) AS jumlah_hadir FROM presensi WHERE DATE(tanggal_masuk) = CURDATE()");
+// Ambil hasil
+if ($jml_hadir_query) {
+    $data = $jml_hadir_query->fetch_assoc();
+    $jumlah_hadir = $data['jumlah_hadir'];
+} else {
+    $jumlah_hadir = 0; // Jika query gagal, tampilkan 0
+}
+
 ?>
 
 
@@ -68,7 +85,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Jumlah Hadir
                                         </div>
                                         <div class="text-secondary">
-                                            0 Pegawai
+                                            <?= $jumlah_hadir . ' Pegawai'; ?>
                                         </div>
                                     </div>
                                 </div>
