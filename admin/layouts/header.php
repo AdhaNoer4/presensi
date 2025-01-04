@@ -6,6 +6,12 @@ $id = $_SESSION["id"];
 $result = mysqli_query($connection, "SELECT foto FROM pegawai WHERE id = '$id'");
 $pegawai = mysqli_fetch_array($result);
 
+// Query untuk menghitung jumlah pengajuan pending
+$query_pending = "SELECT COUNT(*) AS jumlah_pending FROM ketidakhadiran WHERE status_pengajuan = 'pending'";
+$result_pending = mysqli_query($connection, $query_pending);
+$data_pending = $result_pending->fetch_assoc();
+$jumlah_pending = $data_pending['jumlah_pending'];
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -201,6 +207,7 @@ $pegawai = mysqli_fetch_array($result);
                                     </span>
                                     <span class="nav-link-title">
                                         Ketidakhadiran
+                                        <span id="notification-dot" class="badge rounded-circle bg-danger" style="width: 10px; height: 10px; font-size: 0; padding: 0; border-radius: 50%; top: 5px; right: 5px; display: none;">&nbsp;</span>
                                     </span>
                                 </a>
                             </li>

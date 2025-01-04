@@ -213,6 +213,38 @@
     })
 </script>
 
+<!-- notifikasi ketidakhadiran -->
+<script>
+    function checkNotifications() {
+        $.ajax({
+            url: 'get_pending_count.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                const jumlahPending = response.jumlah_pending;
+
+                // Tampilkan titik merah jika ada pending
+                if (jumlahPending > 0) {
+                    $('#notification-dot').show();
+                } else {
+                    $('#notification-dot').hide();
+                }
+            },
+            error: function() {
+                console.error('Gagal mengambil data notifikasi.');
+            }
+        });
+    }
+
+    // Jalankan fungsi saat halaman dimuat
+    $(document).ready(function() {
+        checkNotifications();
+
+        // Perbarui notifikasi setiap 10 detik
+        setInterval(checkNotifications, 10000);
+    });
+</script>
+
 </body>
 
 </html>
