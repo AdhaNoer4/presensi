@@ -30,7 +30,11 @@ if ($jml_hadir_query) {
 }
 
 // Query untuk menghitung jumlah alpa
-$query_alpa = "SELECT COUNT(*) AS jumlah_alpa FROM presensi WHERE DATE(tanggal_masuk) = CURDATE() AND tanggal_masuk IS NULL";
+$query_alpa = "SELECT COUNT(*) AS jumlah_alpa
+    FROM users p
+    LEFT JOIN presensi pr ON p.id_pegawai = pr.id_pegawai 
+                            AND DATE(pr.tanggal_masuk) = CURDATE()
+    WHERE pr.tanggal_masuk IS NULL";
 $result_alpa = mysqli_query($connection, $query_alpa);
 $data_alpa = $result_alpa->fetch_assoc();
 $jumlah_alpa = $data_alpa['jumlah_alpa'];
