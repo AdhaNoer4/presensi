@@ -217,7 +217,7 @@
 <script>
     function checkNotifications() {
         $.ajax({
-            url: 'get_pending_count.php',
+            url: '../fitur_lainnya/get_pending_count.php',
             method: 'GET',
             dataType: 'json',
             success: function(response) {

@@ -1,7 +1,6 @@
 <?php
 global $judul;
 require_once("../../config.php");
-
 $id = $_SESSION["id"];
 $result = mysqli_query($connection, "SELECT foto FROM pegawai WHERE id = '$id'");
 $pegawai = mysqli_fetch_array($result);

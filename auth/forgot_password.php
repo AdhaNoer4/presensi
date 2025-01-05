@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->addAddress($email);
 
             $mail->Subject = 'Reset Password';
-            $mail->Body    = "Klik tautan berikut untuk reset password Anda: http://localhost/presensi/auth/reset_password.php?token=$token";
+            $mail->Body    = "Klik tautan berikut untuk reset password Anda: " . base_url('auth/reset_password.php') . "?token=$token";
 
             $mail->send();
 
