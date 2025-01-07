@@ -18,9 +18,20 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $filter_tahun_bulan = $_POST['filter_tahun'] . '-' . $_POST['filter_bulan'];
-    
-    $result = mysqli_query($connection, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi, pegawai.nip FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE DATE_FORMAT(tanggal_masuk, '%Y-%m') = '$filter_tahun_bulan' ORDER BY tanggal_masuk DESC");
-    
+$search_name = isset($_POST['search_name']) && !empty($_POST['search_name']) ? $_POST['search_name'] : '';
+
+$query = "SELECT presensi.*, pegawai.nama, pegawai.lokasi_presensi, pegawai.nip 
+          FROM presensi 
+          JOIN pegawai ON presensi.id_pegawai = pegawai.id 
+          WHERE DATE_FORMAT(tanggal_masuk, '%Y-%m') = '$filter_tahun_bulan'";
+
+if (!empty($search_name)) {
+    $query .= " AND pegawai.nama LIKE '%$search_name%'";
+}
+
+$query .= " ORDER BY tanggal_masuk DESC";
+
+$result = mysqli_query($connection, $query);
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -40,16 +51,15 @@ $sheet->setCellValue('G5', 'JAM KELUAR');
 $sheet->setCellValue('H5', 'TOTAL JAM KERJA');
 $sheet->setCellValue('I5', 'TOTAL JAM TERLAMBAT');
 
-$sheet ->mergeCells('A1:F1');
-$sheet ->mergeCells('A2:B2');
-$sheet ->mergeCells('A3:B3');
+$sheet->mergeCells('A1:F1');
+$sheet->mergeCells('A2:B2');
+$sheet->mergeCells('A3:B3');
 
 $no = 1;
 $row = 6;
 
-while($data = mysqli_fetch_array($result)){
-
-    //menghitung total jam kerja
+while ($data = mysqli_fetch_array($result)) {
+    // Menghitung total jam kerja
     $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($data['tanggal_masuk'] . ' ' . $data['jam_masuk']));
     $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($data['tanggal_keluar'] . ' ' . $data['jam_keluar']));
     $timestamp_masuk = strtotime($jam_tanggal_masuk);
@@ -59,20 +69,17 @@ while($data = mysqli_fetch_array($result)){
     $selisih -= $total_jam_kerja * 3600;
     $selisih_menit_kerja = floor($selisih / 60);
 
-    //menghitung total jam terlambat
+    // Menghitung total jam terlambat
     $lokasi_presensi = $data['lokasi_presensi'];
     $lokasi = mysqli_query($connection, "SELECT * FROM lokasi_presensi WHERE nama_lokasi = '$lokasi_presensi'");
 
-    while ($lokasi_result = mysqli_fetch_array($lokasi)) :
+    while ($lokasi_result = mysqli_fetch_array($lokasi)) {
         $jam_masuk_kantor = date('H:i:s', strtotime($lokasi_result['jam_masuk']));
-    endwhile;
+    }
     $jam_masuk = date('H:i:s', strtotime($data['jam_masuk']));
     $timestamp_jam_masuk_real = strtotime($jam_masuk);
     $timestamp_jam_masuk_kantor = strtotime($jam_masuk_kantor);
     $terlambat = $timestamp_jam_masuk_real - $timestamp_jam_masuk_kantor;
-
-    // Set flag untuk status keterlambatan
-    $is_ontime = $terlambat <= 0;
 
     if ($terlambat > 0) {
         $total_jam_terlambat = floor($terlambat / 3600);
@@ -83,30 +90,26 @@ while($data = mysqli_fetch_array($result)){
         $selisih_menit_terlambat = 0;
     }
 
-    $sheet->setCellValue('A' . $row, $no );
+    $sheet->setCellValue('A' . $row, $no);
     $sheet->setCellValue('B' . $row, $data['nama']);
     $sheet->setCellValue('C' . $row, $data['nip']);
     $sheet->setCellValue('D' . $row, $data['tanggal_masuk']);
     $sheet->setCellValue('E' . $row, $data['jam_masuk']);
     $sheet->setCellValue('F' . $row, $data['tanggal_keluar']);
     $sheet->setCellValue('G' . $row, $data['jam_keluar']);
-    $sheet->setCellValue('H' . $row, $total_jam_kerja.' Jam ' . $selisih_menit_kerja. ' Menit');
-    $sheet->setCellValue('I' . $row, $total_jam_terlambat.' Jam ' . $selisih_menit_terlambat. ' Menit');
+    $sheet->setCellValue('H' . $row, $total_jam_kerja . ' Jam ' . $selisih_menit_kerja . ' Menit');
+    $sheet->setCellValue('I' . $row, $total_jam_terlambat . ' Jam ' . $selisih_menit_terlambat . ' Menit');
 
     $no++;
     $row++;
-
-
-
 }
+
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment;filename="Laporan Presensi Bulanan.xlsx"');
+header('Content-Disposition: attachment;filename="Laporan_Presensi_Bulanan.xlsx"');
 header('Cache-Control: max-age=0');
 
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-$writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
-
 
 
 ?>
