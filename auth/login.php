@@ -79,7 +79,7 @@ if (isset($_POST['login'])) {
                 <div class="col-lg">
                     <div class="container-tight">
                         <div class="text-center mb-4">
-                            <h3 class="navbar-brand navbar-brand-autodark fs-1">Presensi Online</h3>
+                            <h3 class="navbar-brand navbar-brand-autodark fs-1">Digital Presence</h3>
                         </div>
                         <?php
 
