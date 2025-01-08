@@ -49,6 +49,8 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Login Presensi</title>
+    <!-- Favicon -->
+    <link rel="icon" href="<?= base_url('assets/img/login-pic.png') ?>" type="image/png">
     <!-- CSS files -->
     <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
@@ -77,7 +79,7 @@ if (isset($_POST['login'])) {
                 <div class="col-lg">
                     <div class="container-tight">
                         <div class="text-center mb-4">
-                            <h3 class="navbar-brand navbar-brand-autodark fs-1">Presensi Online</h3>
+                            <h3 class="navbar-brand navbar-brand-autodark fs-1">Digital Presence</h3>
                         </div>
                         <?php
 
@@ -102,9 +104,9 @@ if (isset($_POST['login'])) {
                                     <div class="mb-2">
                                         <label class="form-label">Password</label>
                                         <div class="input-group input-group-flat">
-                                            <input type="password" class="form-control" name="password" placeholder="Your password" autocomplete="off">
+                                            <input type="password" class="form-control" id="password" name="password" placeholder="Your password" autocomplete="off">
                                             <span class="input-group-text">
-                                                <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                                <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip" id="togglePassword"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                         <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -140,6 +142,19 @@ if (isset($_POST['login'])) {
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- show password -->
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            // Toggle tipe input password
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+        });
+    </script>
+
     <?php if (isset($_SESSION["gagal"])) { ?>
         <script>
             Swal.fire({
@@ -149,8 +164,8 @@ if (isset($_POST['login'])) {
 
             });
         </script>
-    <?php unset($_SESSION["gagal"]); ?>
-  <?php  } ?>
+        <?php unset($_SESSION["gagal"]); ?>
+    <?php  } ?>
 </body>
 
 </html>

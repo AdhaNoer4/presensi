@@ -50,7 +50,7 @@ $result= mysqli_query($connection, "SELECT * FROM ketidakhadiran ORDER BY id DES
                         <?php elseif ($data['status_pengajuan'] == 'REJECTED') : ?>
                             <a class="badge badge-pill bg-danger" href="<?= base_url('admin/data_ketidakhadiran/detail.php?id='.$data['id'])?>">REJECTED</a>
                         <?php else : ?>
-                            <a class="badge-pill bg-success" href="<?= base_url('admin/data_ketidakhadiran/detail.php?id='.$data['id'])?>">APPROVED</a>
+                            <a class="badge badge-pill bg-success" href="<?= base_url('admin/data_ketidakhadiran/detail.php?id='.$data['id'])?>">APPROVED</a>
                         <?php endif; ?>
                         </td>
                        

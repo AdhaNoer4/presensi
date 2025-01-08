@@ -9,9 +9,42 @@ $judul = "Home";
 include('../layouts/header.php');
 require_once('../../config.php');
 
+// Atur timezone (WIB, WITA, WIT)
+date_default_timezone_set('Asia/Jakarta'); // WIB
+// date_default_timezone_set('Asia/Makassar'); // WITA
+// date_default_timezone_set('Asia/Jayapura'); // WIT
+
+// Query total pegawai aktif
 $pegawai = mysqli_query($connection, "SELECT pegawai.*, users.status FROM pegawai JOIN users ON pegawai.id = users.id_pegawai WHERE status = 'Aktif'");
 
 $total_pegawai_aktif = mysqli_num_rows($pegawai);
+
+// query jumlah hadir
+$jml_hadir_query = mysqli_query($connection, "SELECT COUNT(*) AS jumlah_hadir FROM presensi WHERE DATE(tanggal_masuk) = CURDATE()");
+// Ambil hasil
+if ($jml_hadir_query) {
+    $data = $jml_hadir_query->fetch_assoc();
+    $jumlah_hadir = $data['jumlah_hadir'];
+} else {
+    $jumlah_hadir = 0; // Jika query gagal, tampilkan 0
+}
+
+// Query untuk menghitung jumlah alpa
+$query_alpa = "SELECT COUNT(*) AS jumlah_alpa
+    FROM users p
+    LEFT JOIN presensi pr ON p.id_pegawai = pr.id_pegawai 
+                            AND DATE(pr.tanggal_masuk) = CURDATE()
+    WHERE pr.tanggal_masuk IS NULL";
+$result_alpa = mysqli_query($connection, $query_alpa);
+$data_alpa = $result_alpa->fetch_assoc();
+$jumlah_alpa = $data_alpa['jumlah_alpa'];
+
+// Query untuk menghitung jumlah ketidakhadiran dengan keterangan (sakit, izin, atau cuti)
+$query_ketidakhadiran = "SELECT COUNT(*) AS jumlah_ketidakhadiran FROM ketidakhadiran WHERE DATE(tanggal) = CURDATE() AND keterangan IN ('sakit', 'izin', 'cuti')";
+$result_ketidakhadiran = mysqli_query($connection, $query_ketidakhadiran);
+$data_ketidakhadiran = $result_ketidakhadiran->fetch_assoc();
+$jumlah_ketidakhadiran = $data_ketidakhadiran['jumlah_ketidakhadiran'];
+
 ?>
 
 
@@ -68,7 +101,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Jumlah Hadir
                                         </div>
                                         <div class="text-secondary">
-                                            0 Pegawai
+                                            <?= $jumlah_hadir . ' Pegawai'; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +128,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Jumlah Alpa
                                         </div>
                                         <div class="text-secondary">
-                                            0 Pegawai
+                                            <?= $jumlah_alpa . ' Pegawai'; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +155,7 @@ $total_pegawai_aktif = mysqli_num_rows($pegawai);
                                             Jumlah Sakit, Izin & Cuti
                                         </div>
                                         <div class="text-secondary">
-                                            0 Pegawai
+                                            <?= $jumlah_ketidakhadiran . ' Pegawai'; ?>
                                         </div>
                                     </div>
                                 </div>

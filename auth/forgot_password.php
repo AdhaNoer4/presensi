@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->addAddress($email);
 
             $mail->Subject = 'Reset Password';
-            $mail->Body    = "Klik tautan berikut untuk reset password Anda: http://localhost/presensi/auth/reset_password.php?token=$token";
+            $mail->Body    = "Klik tautan berikut untuk reset password Anda: " . base_url('auth/reset_password.php') . "?token=$token";
 
             $mail->send();
 
@@ -72,6 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lupa Password</title>
+    <!-- Favicon -->
+    <link rel="icon" href="<?= base_url('assets/img/login-pic.png') ?>" type="image/png">
     <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/demo.min.css?1692870487') ?>" rel="stylesheet" />

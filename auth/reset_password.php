@@ -1,4 +1,4 @@
-<?php  require_once('../config.php'); ?>
+<?php require_once('../config.php'); ?>
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +9,8 @@
     <title>Reset Password</title>
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="<?= base_url('assets/img/login-pic.png') ?>" type="image/png">
     <link href="<?= base_url('assets/css/tabler.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/tabler-vendors.min.css?1692870487') ?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/demo.min.css?1692870487') ?>" rel="stylesheet" />
@@ -18,7 +20,7 @@
 <body class=" d-flex flex-column">
     <?php
 
-   
+
     // Koneksi ke database
     $pdo = new PDO('mysql:host=localhost;dbname=presensi', 'root', '');
 

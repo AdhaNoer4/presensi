@@ -136,6 +136,19 @@
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<!-- show password -->
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function() {
+        // Toggle tipe input password
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+    });
+</script>
+
 <!-- alert validasi -->
 <?php if (isset($_SESSION['validasi'])) : ?>
     <script>
@@ -198,6 +211,38 @@
         });
         return false;
     })
+</script>
+
+<!-- notifikasi ketidakhadiran -->
+<script>
+    function checkNotifications() {
+        $.ajax({
+            url: '../fitur_lainnya/get_pending_count.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                const jumlahPending = response.jumlah_pending;
+
+                // Tampilkan titik merah jika ada pending
+                if (jumlahPending > 0) {
+                    $('#notification-dot').show();
+                } else {
+                    $('#notification-dot').hide();
+                }
+            },
+            error: function() {
+                console.error('Gagal mengambil data notifikasi.');
+            }
+        });
+    }
+
+    // Jalankan fungsi saat halaman dimuat
+    $(document).ready(function() {
+        checkNotifications();
+
+        // Perbarui notifikasi setiap 10 detik
+        setInterval(checkNotifications, 10000);
+    });
 </script>
 
 </body>
