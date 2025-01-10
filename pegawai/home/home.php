@@ -47,57 +47,71 @@ if ($zona_waktu == 'WIB') {
         <div class="row justify-content-center align-items-stretch">
             <!-- Card Presensi Masuk -->
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-header">Presensi Masuk</div>
-                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+    <div class="card h-100">
+        <div class="card-header">Presensi Masuk</div>
+        <div class="card-body d-flex flex-column justify-content-center align-items-center">
 
-                        <?php
-                        $id_pegawai = $_SESSION['id'];
-                        $tanggal_hari_ini = date('Y-m-d');
+            <?php
+            $id_pegawai = $_SESSION['id'];
+            $tanggal_hari_ini = date('Y-m-d');
 
-                        $cek_presensi_masuk = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini'");
-                        ?>
-                        <?php if (mysqli_num_rows($cek_presensi_masuk) == 0) { ?>
+            // Query untuk cek presensi masuk
+            $cek_presensi_masuk = mysqli_query($connection, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini'");
 
-                            <!-- Bagian Tanggal -->
-                            <div class="parent_date fs-2 text-center">
-                                <div id="tanggal_masuk"></div>
-                                <div class="ms-2"></div>
-                                <div id="bulan_masuk"></div>
-                                <div class="ms-2"></div>
-                                <div id="tahun_masuk"></div>
-                            </div>
-                            <!-- Bagian Jam -->
-                            <div class="parent_clock fs-1 text-center fw-bold">
-                                <div id="jam_masuk"></div>:
-                                <div id="menit_masuk"></div>:
-                                <div id="detik_masuk"></div>
-                            </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <!-- Tombol Presensi -->
-                        <form method="POST" action="<?= base_url('pegawai/presensi/presensi_masuk.php') ?>">
-                            <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
-                            <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
-                            <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
-                            <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
-                            <input type="hidden" value="<?= $radius ?>" name="radius">
-                            <input type="hidden" value="<?= $zona_waktu ?>" name="zona_waktu">
-                            <input type="hidden" value="<?= date('Y-m-d') ?>" name="tanggal_masuk">
-                            <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_masuk">
-                            <button type="submit" class="btn btn-success" name="tombol_masuk">Masuk</button>
-                        </form>
-                        <div class="text-center mt-3">
-                            <a href="<?= base_url('pegawai/presensi/absen_perjalanan.php') ?>" class="btn btn-primary">Absen Perjalanan Bisnis</a>
-                        </div>
-                    <?php } else { ?>
-                        <i class="fa-regular fa-circle-check fa-4x text-success"></i>
-                        <h4 class="my-3">Anda telah melakukan presensi masuk</h4>
-                    <?php } ?>
-                    </div>
+            // Query untuk cek status dinas
+            $cek_status_dinas = mysqli_query($connection, "SELECT status FROM users WHERE id_pegawai = '$id_pegawai' AND status = 'dinas'");
+            $is_dinas = mysqli_num_rows($cek_status_dinas) > 0; // True jika status dinas
+            ?>
+            <?php if (mysqli_num_rows($cek_presensi_masuk) == 0) { ?>
+
+                <!-- Bagian Tanggal -->
+                <div class="parent_date fs-2 text-center">
+                    <div id="tanggal_masuk"></div>
+                    <div class="ms-2"></div>
+                    <div id="bulan_masuk"></div>
+                    <div class="ms-2"></div>
+                    <div id="tahun_masuk"></div>
                 </div>
+                <!-- Bagian Jam -->
+                <div class="parent_clock fs-1 text-center fw-bold">
+                    <div id="jam_masuk"></div>:
+                    <div id="menit_masuk"></div>:
+                    <div id="detik_masuk"></div>
+                </div>
+        </div>
+        <div class="card-footer text-center">
+            <!-- Tombol Presensi -->
+            <form method="POST" action="<?= base_url('pegawai/presensi/presensi_masuk.php') ?>">
+                <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
+                <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
+                <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
+                <input type="hidden" value="<?= $radius ?>" name="radius">
+                <input type="hidden" value="<?= $zona_waktu ?>" name="zona_waktu">
+                <input type="hidden" value="<?= date('Y-m-d') ?>" name="tanggal_masuk">
+                <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_masuk">
+                <button type="submit" class="btn btn-success" name="tombol_masuk">Masuk</button>
+            </form>
 
-            </div>
+            <!-- Tombol Absen Perjalanan Bisnis -->
+
+            
+
+                <?php if ($is_dinas) { ?>
+                <div class="text-center mt-3">
+                    <a href="<?= base_url('pegawai/presensi/absen_perjalanan.php') ?>" class="btn btn-primary">Absen Perjalanan Bisnis</a>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <i class="fa-regular fa-circle-check fa-4x text-success"></i>
+            <h4 class="my-3">Anda telah melakukan presensi masuk</h4>
+        <?php } ?>
+            
+            
+        </div>
+    </div>
+</div>
+
 
             <!-- Card Presensi Keluar -->
             <div class="col-md-4">
