@@ -87,13 +87,16 @@ if ($zona_waktu == 'WIB') {
                             <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_masuk">
                             <button type="submit" class="btn btn-success" name="tombol_masuk">Masuk</button>
                         </form>
-
+                        <div class="text-center mt-3">
+                            <a href="<?= base_url('pegawai/presensi/absen_perjalanan.php') ?>" class="btn btn-primary">Absen Perjalanan Bisnis</a>
+                        </div>
                     <?php } else { ?>
                         <i class="fa-regular fa-circle-check fa-4x text-success"></i>
                         <h4 class="my-3">Anda telah melakukan presensi masuk</h4>
                     <?php } ?>
                     </div>
                 </div>
+
             </div>
 
             <!-- Card Presensi Keluar -->
@@ -122,24 +125,24 @@ if ($zona_waktu == 'WIB') {
 
                                     <!-- Bagian Tanggal -->
                                     <div class="parent_date fs-2 text-center">
-                                        <div id="tanggal_keluar">26</div>
+                                        <div id="tanggal_keluar"></div>
                                         <div class="ms-2"></div>
-                                        <div id="bulan_keluar">Desember</div>
+                                        <div id="bulan_keluar"></div>
                                         <div class="ms-2"></div>
-                                        <div id="tahun_keluar">2024</div>
+                                        <div id="tahun_keluar"></div>
                                     </div>
                                     <!-- Bagian Jam -->
                                     <div class="parent_clock fs-1 text-center fw-bold">
-                                        <div id="jam_keluar">22</div>:
-                                        <div id="menit_keluar">02</div>:
-                                        <div id="detik_keluar">36</div>
+                                        <div id="jam_keluar"></div>:
+                                        <div id="menit_keluar"></div>:
+                                        <div id="detik_keluar"></div>
                                     </div>
                     </div>
                     <div class="card-footer text-center">
                         <!-- Tombol Presensi -->
                         <form method="POST" action="<?= base_url('pegawai/presensi/presensi_keluar.php') ?>">
-                            <input type="hidden" name='id' value="<?= $cek_presensi_keluar['id']?>">
-                        <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
+                            <input type="hidden" name='id' value="<?= $cek_presensi_keluar['id'] ?>">
+                            <input type="hidden" name="latitude_pegawai" id="latitude_pegawai">
                             <input type="hidden" name="longitude_pegawai" id="longitude_pegawai">
                             <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
                             <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
@@ -149,7 +152,11 @@ if ($zona_waktu == 'WIB') {
                             <input type="hidden" value="<?= date('H:i:s') ?>" name="jam_keluar">
                             <button type="submit" name="tombol-keluar" class="btn btn-danger">Keluar</button>
                         </form>
-
+                        <?php if($cek_presensi_keluar['jenis_absensi'] == 'Perjalanan Bisnis'){ ?>
+                        <div class="text-center mt-3">
+                            <a href="<?= base_url('pegawai/presensi/absen_perjalanan_keluar.php') ?>" class="btn btn-primary">Absen Keluar Perjalanan Bisnis</a>
+                        </div>
+                        <?php } ?>
                     <?php } else { ?>
                         <i class="fa-regular fa-circle-check fa-4x text-success"></i>
                         <h4 class="my-3">Anda telah melakukan presensi keluar</h4>
