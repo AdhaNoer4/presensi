@@ -211,9 +211,12 @@ while ($pegawai = mysqli_fetch_array($result)) {
                                     <option <?php if ($status == 'Aktif') {
                                                 echo 'selected';
                                             } ?> value="Aktif">Aktif</option>
-                                    <option <?php if ($status == 'Tidak Aktif') {
+                                    <option <?php if ($status == 'Dinas') {
                                                 echo 'selected';
                                             } ?> value="Tidak Aktif">Tidak Aktif</option>
+                                    <option <?php if ($status == 'Dinas') {
+                                                echo 'selected';
+                                            } ?> value="Dinas">Dinas</option>
                                 </select>
                             </div>
                         </div>

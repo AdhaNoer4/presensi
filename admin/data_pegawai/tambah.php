@@ -176,6 +176,9 @@ if (isset($_POST['submit'])) {
                                     <option <?php if (isset($_POST['status']) && $_POST['status'] == 'Tidak Aktif') {
                                                 echo 'selected';
                                             } ?> value="Tidak Aktif">Tidak Aktif</option>
+                                    <option <?php if (isset($_POST['status']) && $_POST['status'] == 'Dinas') {
+                                                echo 'selected';
+                                            } ?> value="Dinas">Dinas</option>
                                 </select>
                             </div>
                         </div>

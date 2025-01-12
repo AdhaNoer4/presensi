@@ -12,7 +12,7 @@ if (isset($_POST['login'])) {
         $row = mysqli_fetch_assoc($result);
 
         if (password_verify($password, $row["password"])) {
-            if ($row["status"] == "Aktif") {
+            if ($row["status"] == "Aktif" || "Dinas") {
                 $_SESSION["login"] = true;
                 $_SESSION["id"] = $row['id'];
                 $_SESSION['role'] = $row['role'];
